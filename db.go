@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
-var db = make(map[string]sql.DB)
+var db = make(map[string]*sql.DB)
 
 func Con(name, user string){
 	db[name], _ = sql.Open("mysql", user)
