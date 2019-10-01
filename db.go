@@ -7,7 +7,7 @@ import (
 )
 var db = make(map[string]*sql.DB)
 
-func Conn(name, user string){
+func Con(name, user string){
 	db[name], _ = sql.Open("mysql", user)
 }
 
