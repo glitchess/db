@@ -8,7 +8,7 @@ import (
 var db map[string]*sql.DB
 
 func Conn(name, user string){
-	db[name], _ = sql.Open("mysql", a)
+	db[name], _ = sql.Open("mysql", user)
 }
 
 func Query(name, query string, args ...interface{}) map[int]map[string]string{
