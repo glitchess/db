@@ -36,7 +36,6 @@ func Query(name, query string, args ...interface{}) map[int]map[string]string{
 			result[i] = arr
 			i++
 		}
-		fmt.Println(err)
 	return result
 }
 }
@@ -44,7 +43,6 @@ func Query(name, query string, args ...interface{}) map[int]map[string]string{
 func Exec(name, query string, args ...interface{}) int64{
 	db[name].Ping()
 	rows, err := db[name].Exec(query, args...)
-	fmt.Println(err)
 	if err==nil{
 		result, _ := rows.LastInsertId()
 		return result
