@@ -8,7 +8,6 @@ import (
 var db map[string]*sql.DB
 
 func Conn(name, user string){
-	var err error
 	db[name], _ = sql.Open("mysql", a)
 }
 
