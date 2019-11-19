@@ -4,19 +4,19 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 )
-var db = make(map[string]*sql.DB)
+var db *sql.DB
 
-func Con(name, user string){
-	db[name], _ = sql.Open("mysql", user)
+func Open(user, pass, base string){
+	db, _ = sql.Open("mysql", user+":"+pass+"@/"+base) //root:password@/productdb
 }
 
-func Query(name, query string, args ...interface{}) map[int]map[string]string{
-	db[name].Ping()
+func Query(query string, args ...interface{}) (map[int]map[string]string, error){
+	db.Ping()
 	var result = make(map[int]map[string]string)
-	rows, err := db[name].Query(query, args...)
+	rows, err := db.Query(query, args...)
 	defer rows.Close()
 	if err!=nil{
-		return nil
+
 	}else{
 		col, _ := rows.Columns()
 		i := 0
@@ -35,17 +35,23 @@ func Query(name, query string, args ...interface{}) map[int]map[string]string{
 			result[i] = arr
 			i++
 		}
-	return result
 }
+return result, err
 }
 
-func Exec(name, query string, args ...interface{}) int64{
-	db[name].Ping()
-	rows, err := db[name].Exec(query, args...)
+func Exec(query string, args ...interface{}) int64{
+	db.Ping()
+	rows, err := db.Exec(query, args...)
 	if err==nil{
 		result, _ := rows.LastInsertId()
 		return result
 	}else{
 		return -1
 	}
+}
+
+func OnlyExec(name, query string, args ...interface{}){
+	db.Ping()
+	rows, _ := db.Exec(query, args...)
+	rows.LastInsertId()
 }
